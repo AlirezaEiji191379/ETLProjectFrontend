@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .test-button {
+            background-color: #28a745;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Connection Management</h1>
+    <form id="connectionForm">
+        <!-- Your form elements here -->
+
+        <button type="button" id="testConnection">Test Connection</button>
+        <button type="button" id="saveConnection">Save Connection</button>
+    </form>
+
+    <h2>Database Connections</h2>
+    <table id="connectionsTable">
+        <thead>
+            <tr>
+                <th>Connection ID</th>
+                <th>Connection Name</th>
+                <th>Connection Type</th>
+                <th>Host</th>
+                <th>Port</th>
+                <th>Username</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>PostgreSQL Connection</td>
+                <td>PostgreSQL</td>
+                <td>localhost</td>
+                <td>5432</td>
+                <td>pg_user</td>
+                <td>
+                    <button class="test-button">Test</button>
+                    <button class="delete-button">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>MySQL Connection</td>
+                <td>MySQL</td>
+                <td>localhost</td>
+                <td>3306</td>
+                <td>mysql_user</td>
+                <td>
+                    <button class="test-button">Test</button>
+                    <button class="delete-button">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>SQL Server Connection</td>
+                <td>SQL Server</td>
+                <td>localhost</td>
+                <td>1433</td>
+                <td>sql_user</td>
+                <td>
+                    <button class="test-button">Test</button>
+                    <button class="delete-button">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // JavaScript code for fetching and displaying connections, testing, and deleting
+        // will go here
+    </script>
+</body>
+</html>

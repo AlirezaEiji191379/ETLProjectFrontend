@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            height: 35px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Connection Configuration</h1>
+    <form id="connectionForm">
+        <label for="dbType">Database Type:</label>
+        <select id="dbType" name="dbType">
+            <option value="sqlserver">SQL Server</option>
+            <option value="mysql">MySQL</option>
+            <option value="postgresql">PostgreSQL</option>
+        </select><br><br>
+
+        <label for="host">Host:</label>
+        <input type="text" id="host" name="host"><br><br>
+
+        <label for="port">Port:</label>
+        <input type="text" id="port" name="port"><br><br>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="connectionName">Connection Name:</label>
+        <input type="text" id="connectionName" name="connectionName"><br><br>
+
+        <label for="database">Database:</label>
+        <select id="database" name="database"></select><br><br>
+
+        <button type="button" id="testConnection">Test Connection</button>
+        <button type="button" id="saveConnection">Save Connection</button>
+    </form>
+
+    <script>
+        // JavaScript code remains the same as in the previous example
+    </script>
+</body>
+</html>
