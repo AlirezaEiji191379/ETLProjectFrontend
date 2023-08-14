@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,8 @@
             padding: 0;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             text-align: center;
             padding: 20px;
             color: #333;
@@ -24,11 +26,14 @@
             border-collapse: collapse;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
@@ -59,6 +64,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Database Connection Management</h1>
 
@@ -75,49 +81,51 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>PostgreSQL Connection</td>
-                <td>PostgreSQL</td>
-                <td>localhost</td>
-                <td>5432</td>
-                <td>pg_user</td>
-                <td>
-                    <button class="test-button">Test</button>
-                    <button class="delete-button">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>MySQL Connection</td>
-                <td>MySQL</td>
-                <td>localhost</td>
-                <td>3306</td>
-                <td>mysql_user</td>
-                <td>
-                    <button class="test-button">Test</button>
-                    <button class="delete-button">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>SQL Server Connection</td>
-                <td>SQL Server</td>
-                <td>localhost</td>
-                <td>1433</td>
-                <td>sql_user</td>
-                <td>
-                    <button class="test-button">Test</button>
-                    <button class="delete-button">Delete</button>
-                </td>
-            </tr>
+        <tbody id="ConnectionsBody">
         </tbody>
     </table>
 
     <script>
-        // JavaScript code for fetching and displaying connections, testing, and deleting
-        // will go here
+        function fetchConnectionsList() {
+            let tableBody = document.getElementById("ConnectionsBody");
+            let url = "http://localhost:5000/DbConnection/Connections"
+            fetch(url, { method: 'GET' })
+                .then(result => result.json())
+                .then(connectionsList => {
+                    connectionsList["message"].forEach(connection => {
+                        const row = document.createElement("tr");
+                        const cell1 = document.createElement("td");
+                        const cell2 = document.createElement("td");
+                        const cell3 = document.createElement("td");
+                        const cell4 = document.createElement("td");
+                        const cell5 = document.createElement("td");
+                        const cell6 = document.createElement("td");
+                        const cell7 = document.createElement("td");
+                        
+                        cell1.textContent = connection.id;
+                        cell2.textContent = connection.connectionName;
+                        cell3.textContent = connection.dataSourceType;
+                        cell4.textContent = connection.host;
+                        cell5.textContent = connection.port;
+                        cell6.textContent = connection.username;
+                        cell7.innerHTML = "<button onclick=\"\" class=\"delete-button\">Delete</button>"
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        row.appendChild(cell3);
+                        row.appendChild(cell4);
+                        row.appendChild(cell5);
+                        row.appendChild(cell6);
+                        row.appendChild(cell7);
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch();
+        }
+        function deleteConnection(){
+            
+        }
+        fetchConnectionsList();
     </script>
 </body>
+
 </html>
