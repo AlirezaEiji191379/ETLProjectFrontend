@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,14 +60,15 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Database Connection Configuration</h1>
     <form id="connectionForm">
         <label for="dbType">Database Type:</label>
-        <select id="dbType" name="dbType">
-            <option value="sqlserver">SQL Server</option>
-            <option value="mysql">MySQL</option>
-            <option value="postgresql">PostgreSQL</option>
+        <select onchange="clearAllData()" id="dbType" name="dbType">
+            <option value="SqlServer">SQL Server</option>
+            <option value="Mysql">MySQL</option>
+            <option value="Postgresql">PostgreSQL</option>
         </select><br><br>
 
         <label for="host">Host:</label>
@@ -85,14 +87,119 @@
         <input type="text" id="connectionName" name="connectionName"><br><br>
 
         <label for="database">Database:</label>
-        <select id="database" name="database"></select><br><br>
+        <select id="database" onclick="fetchDatabases()" name="database"></select><br><br>
 
         <button type="button" id="testConnection">Test Connection</button>
         <button type="button" id="saveConnection">Save Connection</button>
     </form>
 
     <script>
-        // JavaScript code remains the same as in the previous example
+        function clearAllData() {
+            document.getElementById("host").value = null;
+            document.getElementById("port").value = null;
+            document.getElementById("username").value = null;
+            document.getElementById("password").value = null;
+            document.getElementById("connectionName").value = null;
+            let databaseDropDown = document.getElementById("database");
+            while (databaseDropDown.options.length > 0) {
+                databaseDropDown.remove(0);
+            }
+        }
+
+        function fetchDatabases() {
+            if (document.getElementById("database").options.length > 0) {
+                return;
+            }
+            const connectionDto = {
+                host: document.getElementById("host").value,
+                port: document.getElementById("port").value,
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                dataSourceType: document.getElementById("dbType").value
+            };
+            const databaseListQuery = {
+                ConnectionDto: connectionDto
+            };
+            let url = 'http://localhost:5000/DbConnection/DatabasesByConnectionDto';
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(databaseListQuery)
+            };
+            fetch(url, requestOptions)
+                .then(Result => Result.json())
+                .then(dbsList => {
+                    document.getElementById("database").innerHTML = createSelectOptions(dbsList["message"]);
+                })
+                .catch(errorMsg => { console.log(errorMsg); });
+        }
+
+        function createSelectOptions(dbsList) {
+            let result = "";
+            dbsList.forEach(dbName => {
+                result = result + `<option value="${dbName}">${dbName}</option>`
+            });
+            return result;
+        }
+
+        document.getElementById('testConnection').addEventListener('click', function () {
+            const databaseListQuery = {
+                ConnectionDto: {
+                    host: document.getElementById("host").value,
+                    port: document.getElementById("port").value,
+                    username: document.getElementById("username").value,
+                    password: document.getElementById("password").value,
+                    dataSourceType: document.getElementById("dbType").value
+                }
+            };
+            let url = 'http://localhost:5000/DbConnection/Test';
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(databaseListQuery)
+            };
+            fetch(url, requestOptions)
+                .then(Result => Result.json())
+                .then(message => {
+                    alert(message["message"])
+                })
+                .catch(x => alert(message["message"]));
+        });
+
+        document.getElementById('saveConnection').addEventListener('click', function () {
+            let selectedDatabaseIndex = document.getElementById("database").selectedIndex;
+            const databaseListQuery = {
+                ConnectionDto: {
+                    host: document.getElementById("host").value,
+                    port: document.getElementById("port").value,
+                    username: document.getElementById("username").value,
+                    password: document.getElementById("password").value,
+                    dataSourceType: document.getElementById("dbType").value,
+                    databaseName : document.getElementById("database").options[selectedDatabaseIndex].value,
+                    connectionName : document.getElementById("connectionName").value
+                }
+            };
+            let url = 'http://localhost:5000/DbConnection';
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(databaseListQuery)
+            };
+            fetch(url, requestOptions)
+                .then(Result => Result.json())
+                .then(message => {
+                    alert(message["message"])
+                })
+                .catch(x => alert(message["message"]));
+        });
+
     </script>
 </body>
+
 </html>
