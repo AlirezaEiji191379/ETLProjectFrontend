@@ -1,87 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAG Graph with D3.js</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<style>
-  .link {
-    stroke: #999;
-    stroke-opacity: 0.6;
-  }
-  
-  .node {
-    fill: #ccc;
-    stroke: #fff;
-    stroke-width: 2px;
-  }
-  
-  .node-label {
-    font-size: 12px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAG Graph with D3.js</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .link {
+      stroke: #999;
+      stroke-opacity: 0.6;
+    }
+
+    .node {
+      fill: #ccc;
+      stroke: #fff;
+      stroke-width: 2px;
+    }
+
+    .node-label {
+      font-size: 12px;
+    }
+
+    body,ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      list-style: none;
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    .navbar li {
+      float: left;
+    }
+
+    .navbar li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navbar li a:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
+
 <body>
-<svg id="graph-container"></svg>
-<script>
-  const data = {
-    "nodes": [
-      {"id": "A"},
-      {"id": "B"},
-      {"id": "C"}
-    ],
-    "links": [
-      {"source": "A", "target": "B"},
-      {"source": "A", "target": "C"}
-    ]
-  };
+  <header>
+    <nav>
+      <ul class="navbar">
+        <li><a href="index.html">Main Page</a></li>
+        <li><a href="DatabaseConnectionDefinition.html">Connection Definition</a></li>
+        <li><a href="DatabaseLists.html">Connections List</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  const width = 600;
-  const height = 400;
 
-  const svg = d3.select("#graph-container")
-    .attr("width", width)
-    .attr("height", height);
+  <svg id="graph-container"></svg>
+  <script>
+    const data = {
+      "nodes": [
+        { "id": "A" },
+        { "id": "B" },
+        { "id": "C" }
+      ],
+      "links": [
+        { "source": "A", "target": "B" },
+        { "source": "A", "target": "C" }
+      ]
+    };
 
-  const simulation = d3.forceSimulation()
-    .nodes(data.nodes)
-    .force("link", d3.forceLink(data.links).id(d => d.id))
-    .force("charge", d3.forceManyBody().strength(-120))
-    .force("center", d3.forceCenter(width / 2, height / 2));
+    const width = 600;
+    const height = 400;
 
-  const link = svg.selectAll(".link")
-    .data(data.links)
-    .enter().append("line")
-    .attr("class", "link");
+    const svg = d3.select("#graph-container")
+      .attr("width", width)
+      .attr("height", height);
 
-  const node = svg.selectAll(".node")
-    .data(data.nodes)
-    .enter().append("circle")
-    .attr("class", "node")
-    .attr("r", 10);
+    const simulation = d3.forceSimulation()
+      .nodes(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id))
+      .force("charge", d3.forceManyBody().strength(-120))
+      .force("center", d3.forceCenter(width / 2, height / 2));
 
-  svg.selectAll(".node-label")
-    .data(data.nodes)
-    .enter().append("text")
-    .attr("class", "node-label")
-    .text(d => d.id);
+    const link = svg.selectAll(".link")
+      .data(data.links)
+      .enter().append("line")
+      .attr("class", "link");
 
-  simulation.on("tick", () => {
-    link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-
-    node
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+    const node = svg.selectAll(".node")
+      .data(data.nodes)
+      .enter().append("circle")
+      .attr("class", "node")
+      .attr("r", 10);
 
     svg.selectAll(".node-label")
-      .attr("x", d => d.x + 15)
-      .attr("y", d => d.y - 15);
-  });
-</script>
+      .data(data.nodes)
+      .enter().append("text")
+      .attr("class", "node-label")
+      .text(d => d.id);
+
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      node
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y);
+
+      svg.selectAll(".node-label")
+        .attr("x", d => d.x + 15)
+        .attr("y", d => d.y - 15);
+    });
+  </script>
+  
 </body>
+
 </html>

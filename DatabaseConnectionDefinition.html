@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Connection Form</title>
     <style>
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            list-style: none;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar li {
+            float: left;
+        }
+
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {
+            background-color: #555;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -62,6 +89,16 @@
 </head>
 
 <body>
+    <header>
+        <nav>
+          <ul class="navbar">
+            <li><a href="index.html">Main Page</a></li>
+            <li><a href="DatabaseConnectionDefinition.html">Connection Definition</a></li>
+            <li><a href="DatabaseLists.html">Connections List</a></li>
+          </ul>
+        </nav>
+      </header>
+      
     <h1>Database Connection Configuration</h1>
     <form id="connectionForm">
         <label for="dbType">Database Type:</label>
@@ -179,8 +216,8 @@
                     username: document.getElementById("username").value,
                     password: document.getElementById("password").value,
                     dataSourceType: document.getElementById("dbType").value,
-                    databaseName : document.getElementById("database").options[selectedDatabaseIndex].value,
-                    connectionName : document.getElementById("connectionName").value
+                    databaseName: document.getElementById("database").options[selectedDatabaseIndex].value,
+                    connectionName: document.getElementById("connectionName").value
                 }
             };
             let url = 'http://localhost:5000/DbConnection';

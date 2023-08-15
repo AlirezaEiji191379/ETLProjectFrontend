@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Connection Management</title>
     <style>
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            list-style: none;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar li {
+            float: left;
+        }
+
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {
+            background-color: #555;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -66,6 +93,16 @@
 </head>
 
 <body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html">Main Page</a></li>
+                <li><a href="DatabaseConnectionDefinition.html">Connection Definition</a></li>
+                <li><a href="DatabaseLists.html">Connections List</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>Database Connection Management</h1>
 
     <h2>Database Connections</h2>
@@ -78,6 +115,7 @@
                 <th>Host</th>
                 <th>Port</th>
                 <th>Username</th>
+                <th>DatabaseName</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -94,6 +132,7 @@
                 .then(connectionsList => {
                     connectionsList["message"].forEach(connection => {
                         const row = document.createElement("tr");
+                        row.setAttribute("connectionId", connection.id)
                         const cell1 = document.createElement("td");
                         const cell2 = document.createElement("td");
                         const cell3 = document.createElement("td");
@@ -101,14 +140,16 @@
                         const cell5 = document.createElement("td");
                         const cell6 = document.createElement("td");
                         const cell7 = document.createElement("td");
-                        
+                        const cell8 = document.createElement("td");
+
                         cell1.textContent = connection.id;
                         cell2.textContent = connection.connectionName;
                         cell3.textContent = connection.dataSourceType;
                         cell4.textContent = connection.host;
                         cell5.textContent = connection.port;
                         cell6.textContent = connection.username;
-                        cell7.innerHTML = "<button onclick=\"\" class=\"delete-button\">Delete</button>"
+                        cell7.textContent = connection.databaseName;
+                        cell8.innerHTML = `<button id =\"${connection.id}\" onclick=\"deleteConnection(this.id)\"> Delete </button>`
                         row.appendChild(cell1);
                         row.appendChild(cell2);
                         row.appendChild(cell3);
@@ -116,13 +157,36 @@
                         row.appendChild(cell5);
                         row.appendChild(cell6);
                         row.appendChild(cell7);
+                        row.appendChild(cell8);
                         tableBody.appendChild(row);
                     });
                 })
                 .catch();
         }
-        function deleteConnection(){
-            
+        function deleteConnection(rowId) {
+            let url = `http://localhost:5000/DbConnection/Connection/${rowId}`;
+            let requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+            fetch(url, requestOptions)
+                .then(Result => Result.json())
+                .then(response => {
+                    alert(response["message"]);
+                    var table = document.getElementById("connectionsTable");
+                    for (var i = 0; i < table.rows.length; i++) {
+                        var row = table.rows[i];
+                        var tagId = row.getAttribute("connectionId");
+                        if (rowId === tagId) {
+                            row.remove()
+                        }
+                    }
+
+                })
+                .catch();
+
         }
         fetchConnectionsList();
     </script>
