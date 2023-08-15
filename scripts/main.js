@@ -22,7 +22,7 @@
             var main = svgParent.find('g > g');
             var h = main.get(0).getBoundingClientRect().height;
             var newHeight = h + 40;
-            newHeight = newHeight < 80 ? 80 : newHeight;
+            newHeight = newHeight < 500 ? 500 : newHeight;
             svgParent.height(newHeight);
 
             // Zoom
@@ -38,19 +38,42 @@
 (function () {
     'use strict';
     jQuery(function () {
-        var triggerElement = jQuery('#loader'); // Change this selector to match the actual element you want to click
-        triggerElement.on('click', loadAndDisplayGraph);
+        var uploadPipeline = jQuery('#loader');
+        uploadPipeline.on('click', function(event){
+            let selectedFile = jQuery('#dataFlowFile').files[0];
+            let reader = new FileReader();
+            reader.onload = function(event1){
+                const fileContent = event1.target.result;
+                alert(fileContent);
+                let url = 'http://localhost:5000/Pipeline/Execute';
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: fileContent
+                };
+                fetch(url,requestOptions)
+                    .then(result => result.json())
+                    .then(respose => {
+                        alert(respose["message"]);
+                    })
+                    .catch(x => alert(respose["message"]));
+            };
+            reader.readAsText(selectedFile);
+        });
     });
 }());
 
 (function () {
     'use strict';
     jQuery(function () {
-        var triggerElement = jQuery('#dataFlowFile'); // Change this selector to match the actual element you want to click
+        var triggerElement = jQuery('#dataFlowFile'); 
         triggerElement.on('change', function (event) {
             const selectedFile = event.target.files[0];
             const reader = new FileReader();
             reader.onload = function (event) {
+                jQuery('#dag > svg').html("<g transform=\"translate(20, 20)\" />");
                 const fileContent = event.target.result;
                 try {
                     let dataflowJson = JSON.parse(fileContent);
@@ -64,7 +87,7 @@
                             nodeNames.push(edges[i].dst);
                         }
                     }
-                    
+
                     let nodes = []
                     let links = []
                     nodeNames.forEach(nodeName => {
@@ -94,21 +117,6 @@
         });
     });
 }());
-
-
-function loadAndDisplayGraph() {
-    data = {
-        name: 'graph2',
-        nodes: [
-            { id: 'node1', value: { label: 'node1' } },
-            { id: 'node2', value: { label: 'node2' } }
-        ],
-        links: [
-            { u: 'node1', v: 'node2', value: { label: 'link1' } }
-        ]
-    }
-    DAG.displayGraph(data, jQuery('#dag-name'), jQuery('#dag > svg'));
-}
 
 
 

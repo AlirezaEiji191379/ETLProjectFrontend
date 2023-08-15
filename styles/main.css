@@ -1,6 +1,8 @@
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 .browsehappy {
@@ -16,6 +18,8 @@ body {
 
 #dag svg {
     border: 1px solid #999;
+    height: 500px;
+    width: 800px;
 }
 
 #dag text {
