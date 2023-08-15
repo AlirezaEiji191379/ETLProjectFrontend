@@ -40,27 +40,23 @@
     jQuery(function () {
         var uploadPipeline = jQuery('#loader');
         uploadPipeline.on('click', function(event){
-            let selectedFile = jQuery('#dataFlowFile').files[0];
-            let reader = new FileReader();
-            reader.onload = function(event1){
-                const fileContent = event1.target.result;
-                alert(fileContent);
-                let url = 'http://localhost:5000/Pipeline/Execute';
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: fileContent
-                };
-                fetch(url,requestOptions)
-                    .then(result => result.json())
-                    .then(respose => {
-                        alert(respose["message"]);
-                    })
-                    .catch(x => alert(respose["message"]));
+            let url = 'http://localhost:5000/Pipeline/Execute';
+            const formData = new FormData();
+            let input = document.getElementById("dataFlowFile");
+            formData.append('file',input.files[0])
+            const requestOptions = {
+                method: 'POST',
+                // headers: {
+                //     'Content-Type': 'multipart/form-data'
+                // },
+                body: formData
             };
-            reader.readAsText(selectedFile);
+            fetch(url,requestOptions)
+                .then(result => result.json())
+                .then(respose => {
+                    alert(respose["message"]);
+                })
+                .catch(x => alert(error));
         });
     });
 }());
